@@ -169,8 +169,6 @@ namespace PixiEditor.ViewModels
             var commandController = services.GetRequiredService<CommandController>();
 
             commandController.Init();
-
-            Console.WriteLine();
         }
 
         /// <summary>
@@ -232,17 +230,17 @@ namespace PixiEditor.ViewModels
         {
         }
 
-        private Shortcut CreateToolShortcut<T>(Key key, ModifierKeys modifier = ModifierKeys.None)
-            where T : Tool
-        {
-            return new Shortcut(key, ToolsSubViewModel.SelectToolCommand, typeof(T), modifier);
-        }
+        //private Shortcut CreateToolShortcut<T>(Key key, ModifierKeys modifier = ModifierKeys.None)
+        //    where T : Tool
+        //{
+        //    return new Shortcut(key, ToolsSubViewModel.SelectToolCommand, typeof(T), modifier);
+        //}
 
-        private Shortcut CreateToolShortcut<T>(Key key, string description, ModifierKeys modifier = ModifierKeys.None)
-            where T : Tool
-        {
-            return new Shortcut(key, ToolsSubViewModel.SelectToolCommand, description, typeof(T), modifier);
-        }
+        //private Shortcut CreateToolShortcut<T>(Key key, string description, ModifierKeys modifier = ModifierKeys.None)
+        //    where T : Tool
+        //{
+        //    return new Shortcut(key, ToolsSubViewModel.SelectToolCommand, description, typeof(T), modifier);
+        //}
 
         /// <summary>
         /// Removes documents with unsaved changes confirmation dialog.
