@@ -163,12 +163,11 @@ namespace PixiEditor.ViewModels
             AddDebugOnlyViewModels();
             AddReleaseOnlyViewModels();
 
+            CommandController = services.GetService<CommandController>();
             ShortcutController = services.GetService<ShortcutController>();
             MiscSubViewModel = services.GetService<MiscViewModel>();
 
             BitmapManager.PrimaryColor = ColorsSubViewModel.PrimaryColor;
-
-            CommandController = services.GetRequiredService<CommandController>();
 
             CommandController.Init();
         }
