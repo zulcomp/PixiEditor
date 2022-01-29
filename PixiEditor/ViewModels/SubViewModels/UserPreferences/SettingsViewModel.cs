@@ -12,6 +12,8 @@ namespace PixiEditor.ViewModels.SubViewModels.UserPreferences
 
         public DiscordSettings Discord { get; set; } = new DiscordSettings();
 
+        public KeybindSettings Keybinds { get; set; } = new KeybindSettings();
+
         public SettingsViewModel(SettingsWindowViewModel owner)
             : base(owner)
         {

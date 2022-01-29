@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using PixiEditor.Helpers;
 using PixiEditor.Helpers.Extensions;
 using PixiEditor.Models.Controllers;
 using PixiEditor.Models.DataHolders;
@@ -94,7 +95,7 @@ namespace PixiEditor
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
-            ((HwndSource)PresentationSource.FromVisual(this)).AddHook(Helpers.WindowSizeHelper.SetMaxSizeHook);
+            this.AddMaxSizeHook();
         }
 
         [Conditional("RELEASE")]

@@ -15,10 +15,14 @@ namespace PixiEditor.Models.Controllers.Commands
     {
         private readonly IServiceProvider _services;
 
+        public static CommandController Current { get; private set; }
+
         public CommandCollection Commands { get; }
 
         public CommandController(IServiceProvider services)
         {
+            Current = this;
+
             _services = services;
             Commands = new();
         }

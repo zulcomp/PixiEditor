@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using PixiEditor.ViewModels;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace PixiEditor.Models.Controllers.Commands
@@ -108,12 +109,27 @@ namespace PixiEditor.Models.Controllers.Commands
 
         private void Command_ShortcutChanged(Command command, CommandShortcutChangedEventArgs args)
         {
+            if (_commandsByShortcut.TryGetValue(command.Shortcut, out Command found) && found != command)
+            {
+                command.Shortcut = args.OldShortcut;
+                return;
+            }
+
             if (args.OldShortcut != KeyCombination.None)
             {
                 _commandsByShortcut.Remove(args.OldShortcut);
             }
 
             _commandsByShortcut.Add(command.Shortcut, command);
+
+            var shortcutController = ViewModelMain.Current.ShortcutController;
+
+            KeyCombination savedShortcut = shortcutController.GetShortcut(command.Name);
+
+            if (savedShortcut != args.NewShortcut)
+            {
+                shortcutController.UpdateShortcut(command, command.Shortcut);
+            }
         }
     }
 }

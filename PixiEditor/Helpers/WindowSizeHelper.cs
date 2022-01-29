@@ -1,10 +1,17 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Windows;
+using System.Windows.Interop;
 
 namespace PixiEditor.Helpers
 {
     static class WindowSizeHelper
     {
+        public static void AddMaxSizeHook(this Window window)
+        {
+            ((HwndSource)PresentationSource.FromVisual(window)).AddHook(SetMaxSizeHook);
+        }
+
         public static IntPtr SetMaxSizeHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             // All windows messages (msg) can be found here
@@ -58,10 +65,10 @@ namespace PixiEditor.Helpers
 
             public RECT(int left, int top, int right, int bottom)
             {
-                this.Left = left;
-                this.Top = top;
-                this.Right = right;
-                this.Bottom = bottom;
+                Left = left;
+                Top = top;
+                Right = right;
+                Bottom = bottom;
             }
         }
 
@@ -83,8 +90,8 @@ namespace PixiEditor.Helpers
 
             public POINT(int x, int y)
             {
-                this.X = x;
-                this.Y = y;
+                X = x;
+                Y = y;
             }
         }
 
