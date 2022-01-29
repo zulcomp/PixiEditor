@@ -32,7 +32,10 @@ namespace PixiEditor.Views.UserControls
         {
             if (Visibility == Visibility.Visible)
             {
+                var dataContext = DataContext as CommandControlViewModel;
                 Dispatcher.BeginInvoke(() => searchTerm.Focus(), DispatcherPriority.Render);
+                dataContext.SearchTerm = "";
+                dataContext.UpdateSearchResults();
             }
         }
     }

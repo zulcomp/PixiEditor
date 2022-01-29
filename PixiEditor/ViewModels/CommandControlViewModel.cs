@@ -1,9 +1,12 @@
 ﻿using PixiEditor.Helpers;
 using PixiEditor.Models.Controllers.Commands;
+using PixiEditor.Models.DataHolders;
 using PixiEditor.Views.UserControls;
 using SkiaSharp;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 
 namespace PixiEditor.ViewModels
@@ -43,6 +46,43 @@ namespace PixiEditor.ViewModels
             _control = control;
             _commandController = commandController ?? throw new ArgumentNullException(nameof(commandController));
             SearchResults = new();
+            SearchTerm = string.Empty;
+        }
+
+        public void UpdateSearchResults()
+        {
+            if (string.IsNullOrWhiteSpace(SearchTerm))
+            {
+                SelectedCommand = -1;
+            }
+
+            SearchResults.Clear();
+
+            if (SearchTerm.StartsWith('#'))
+            {
+                if (SKColor.TryParse(SearchTerm, out SKColor color))
+                {
+                    var command = new FactoryCommand(
+                        "",
+                        $"Set primary color to {color.ToString().ToUpper()}",
+                        _ => color,
+                        _commandController.Commands["PixiEditor.Colors.SelectColor"].GetCommand);
+
+                    SearchResults.Add(command);
+
+                    return;
+                }
+            }
+
+            HandleCommandSearch();
+            AddRecentlyOpened();
+
+            if (SearchResults.Count > 0 && SelectedCommand == -1)
+            {
+                SelectedCommand = 0;
+            }
+
+            SelectedCommand = Math.Min(SearchResults.Count - 1, SelectedCommand);
         }
 
         private void ExeCommand(object paramter)
@@ -82,9 +122,9 @@ namespace PixiEditor.ViewModels
             {
                 index--;
             }
-            else if (key == Key.Enter)
+            else if (key == Key.Enter && SearchResults.Count > 0)
             {
-                ExeCommand(SearchResults[SelectedCommand]);
+                ExeCommand(SearchResults[Math.Max(0, SelectedCommand)]);
                 return false;
             }
             else
@@ -106,44 +146,13 @@ namespace PixiEditor.ViewModels
             return true;
         }
 
-        private void UpdateSearchResults()
+        private void HandleCommandSearch()
         {
             if (string.IsNullOrWhiteSpace(SearchTerm))
             {
-                SelectedCommand = -1;
                 return;
             }
 
-            SearchResults.Clear();
-
-            if (SearchTerm.StartsWith('#'))
-            {
-                if (SKColor.TryParse(SearchTerm, out SKColor color))
-                {
-                    var command = new FactoryCommand(
-                        "",
-                        $"Set primary color to {color.ToString().ToUpper()}",
-                        _ => color,
-                        _commandController.Commands["PixiEditor.Colors.SelectColor"].GetCommand);
-
-                    SearchResults.Add(command);
-                }
-            }
-            else
-            {
-                HandleCommandSearch();
-            }
-
-            if (SearchResults.Count > 0 && SelectedCommand == -1)
-            {
-                SelectedCommand = 0;
-            }
-
-            SelectedCommand = Math.Min(SearchResults.Count - 1, SelectedCommand);
-        }
-
-        private void HandleCommandSearch()
-        {
             foreach (var command in _commandController.Commands)
             {
                 if (command.Display.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase))
@@ -155,6 +164,25 @@ namespace PixiEditor.ViewModels
                 {
                     break;
                 }
+            }
+        }
+
+        private void AddRecentlyOpened()
+        {
+            IEnumerable<RecentlyOpenedDocument> documents = ViewModelMain.Current.FileSubViewModel.RecentlyOpened.Where(x => !x.Corrupt);
+
+            if (!string.IsNullOrWhiteSpace(SearchTerm))
+            {
+                documents = documents.Where(x => x.FilePath.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase));
+            }
+
+            foreach (var document in documents)
+            {
+                SearchResults.Add(new BasicCommand(
+                    "",
+                    $"Open '{document.FullFileName}'",
+                    document,
+                    _commandController.Commands["PixiEditor.File.OpenRecent"].GetCommand));
             }
         }
     }

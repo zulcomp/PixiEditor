@@ -37,6 +37,7 @@ namespace PixiEditor.ViewModels.SubViewModels.Main
         [Commands.Basic("PixiEditor.File.ExportFile", "Export file", Key.E, ModifierKeys.Control)]
         public RelayCommand ExportFileCommand { get; set; } // Command that is used to save file
 
+        [Commands.Basic("PixiEditor.File.OpenRecent", "")]
         public RelayCommand OpenRecentCommand { get; set; }
 
         public RelayCommand RemoveRecentlyOpenedCommand { get; set; }
@@ -75,7 +76,20 @@ namespace PixiEditor.ViewModels.SubViewModels.Main
 
         public void OpenRecent(object parameter)
         {
-            string path = (string)parameter;
+            string path;
+
+            if (parameter is string s)
+            {
+                path = s;
+            }
+            else if (parameter is RecentlyOpenedDocument recentDocument)
+            {
+                path = recentDocument.FilePath;
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
 
             foreach (Document document in Owner.BitmapManager.Documents)
             {
@@ -93,7 +107,7 @@ namespace PixiEditor.ViewModels.SubViewModels.Main
                 return;
             }
 
-            Open((string)parameter);
+            Open(path);
         }
 
         public void RemoveRecentlyOpened(object parameter)

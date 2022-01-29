@@ -5,6 +5,8 @@ using PixiEditor.Models.Dialogs;
 using PixiEditor.Models.Enums;
 using System.Windows.Input;
 using System.Linq;
+using PixiEditor.Models.Controllers;
+using PixiEditor.Models.Services;
 
 namespace PixiEditor.ViewModels.SubViewModels.Main
 {
@@ -13,8 +15,12 @@ namespace PixiEditor.ViewModels.SubViewModels.Main
         public const string ConfirmationDialogTitle = "Unsaved changes";
         public const string ConfirmationDialogMessage = "The document has been modified. Do you want to save changes?";
 
+        private readonly DocumentProvider _docProvider;
+
+        [Commands.Basic("PixiEditor.Document.CenterContent", "Center content")]
         public RelayCommand CenterContentCommand { get; set; }
 
+        [Commands.Basic("PixiEditor.Document.ClipCanvas", "Clip canvas")]
         public RelayCommand ClipCanvasCommand { get; set; }
 
         [Commands.Basic("PixiEditor.Document.DeletePixels", "Delete selected pixels", Key.Delete)]
@@ -28,7 +34,7 @@ namespace PixiEditor.ViewModels.SubViewModels.Main
 
         public RelayCommand FlipCommand { get; set; }
 
-        public DocumentViewModel(ViewModelMain owner)
+        public DocumentViewModel(ViewModelMain owner, DocumentProvider docProvider)
             : base(owner)
         {
             CenterContentCommand = new RelayCommand(CenterContent, Owner.DocumentIsNotNull);
@@ -37,6 +43,7 @@ namespace PixiEditor.ViewModels.SubViewModels.Main
             OpenResizePopupCommand = new RelayCommand(OpenResizePopup, Owner.DocumentIsNotNull);
             RotateToRightCommand = new RelayCommand(RotateDocument, Owner.DocumentIsNotNull);
             FlipCommand = new RelayCommand(FlipDocument, Owner.DocumentIsNotNull);
+            _docProvider = docProvider;
         }
 
         public void FlipDocument(object parameter)
@@ -94,20 +101,23 @@ namespace PixiEditor.ViewModels.SubViewModels.Main
 
         private void OpenResizePopup(object parameter)
         {
-            bool isCanvasDialog = (string)parameter == "canvas";
+            bool canvas = (string)parameter == "canvas";
             ResizeDocumentDialog dialog = new ResizeDocumentDialog(
                 Owner.BitmapManager.ActiveDocument.Width,
                 Owner.BitmapManager.ActiveDocument.Height,
-                isCanvasDialog);
+                canvas);
+
+            var document = _docProvider.GetDocument();
+
             if (dialog.ShowDialog())
             {
-                if (isCanvasDialog)
+                if (canvas)
                 {
-                    Owner.BitmapManager.ActiveDocument.ResizeCanvas(dialog.Width, dialog.Height, dialog.ResizeAnchor);
+                    document.ResizeCanvas(dialog.Width, dialog.Height, dialog.ResizeAnchor);
                 }
                 else
                 {
-                    Owner.BitmapManager.ActiveDocument.Resize(dialog.Width, dialog.Height);
+                    document.Resize(dialog.Width, dialog.Height);
                 }
             }
         }

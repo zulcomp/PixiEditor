@@ -35,6 +35,8 @@ namespace PixiEditor.Models.DataHolders
 
         public string FileName => Path.GetFileNameWithoutExtension(filePath);
 
+        public string FullFileName => Path.GetFileName(filePath);
+
         public string FileExtension
         {
             get
