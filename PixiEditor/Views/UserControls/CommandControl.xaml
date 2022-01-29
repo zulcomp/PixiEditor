@@ -16,7 +16,7 @@
              IsVisibleChanged="Uc_IsVisibleChanged">
     <StackPanel>
         <TextBox Style="{StaticResource DarkTextBoxStyle}" Text="{Binding SearchTerm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                 Padding="5" x:Name="searchTerm">
+                 Padding="5" x:Name="searchTerm" LostFocus="SearchTerm_LostFocus">
             <TextBox.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="5,5,0,0"/>

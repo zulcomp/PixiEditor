@@ -38,5 +38,10 @@ namespace PixiEditor.Views.UserControls
                 dataContext.UpdateSearchResults();
             }
         }
+
+        private void SearchTerm_LostFocus(object sender, RoutedEventArgs e)
+        {
+            Visibility = Visibility.Collapsed;
+        }
     }
 }

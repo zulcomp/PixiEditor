@@ -70,19 +70,24 @@ namespace PixiEditor.ViewModels
 
                     SearchResults.Add(command);
 
+                    EnsureIndex();
                     return;
                 }
             }
 
             HandleCommandSearch();
             AddRecentlyOpened();
+            EnsureIndex();
 
-            if (SearchResults.Count > 0 && SelectedCommand == -1)
+            void EnsureIndex()
             {
-                SelectedCommand = 0;
-            }
+                if (SearchResults.Count > 0 && SelectedCommand == -1)
+                {
+                    SelectedCommand = 0;
+                }
 
-            SelectedCommand = Math.Min(SearchResults.Count - 1, SelectedCommand);
+                SelectedCommand = Math.Min(SearchResults.Count - 1, SelectedCommand);
+            }
         }
 
         private void ExeCommand(object paramter)
