@@ -66,7 +66,7 @@ namespace PixiEditor.ViewModels
                         "",
                         $"Set primary color to {color.ToString().ToUpper()}",
                         _ => color,
-                        _commandController.Commands["PixiEditor.Colors.SelectColor"].GetCommand);
+                        _commandController.Commands["PixiEditor.Colors.SelectColor"].ICommand);
 
                     SearchResults.Add(command);
 
@@ -187,7 +187,7 @@ namespace PixiEditor.ViewModels
                     "",
                     $"Open '{document.FullFileName}'",
                     document,
-                    _commandController.Commands["PixiEditor.File.OpenRecent"].GetCommand));
+                    _commandController.Commands["PixiEditor.File.OpenRecent"].ICommand));
             }
         }
     }

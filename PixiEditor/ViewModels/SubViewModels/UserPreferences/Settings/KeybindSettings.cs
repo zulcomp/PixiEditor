@@ -48,7 +48,7 @@ namespace PixiEditor.ViewModels.SubViewModels.UserPreferences.Settings
         {
             Commands.Clear();
 
-            foreach (var command in commands(_commandController.Commands.Where(x => string.IsNullOrWhiteSpace(x.Display))))
+            foreach (var command in commands(_commandController.Commands.Where(x => !string.IsNullOrWhiteSpace(x.Display))))
             {
                 Commands.Add(command);
             }

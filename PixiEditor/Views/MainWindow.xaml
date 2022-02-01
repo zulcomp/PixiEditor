@@ -10,7 +10,8 @@
         xmlns:converters="clr-namespace:PixiEditor.Helpers.Converters"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:ui="clr-namespace:PixiEditor.Helpers.UI"
-        xmlns:cmd="http://www.galasoft.ch/mvvmlight" 
+        xmlns:cmd="http://www.galasoft.ch/mvvmlight"
+        xmlns:cmds="clr-namespace:PixiEditor.Models.Controllers.Commands"
         xmlns:avalondock="https://github.com/Dirkster99/AvalonDock"
         xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker" 
         xmlns:usercontrols="clr-namespace:PixiEditor.Views.UserControls" 
@@ -105,9 +106,9 @@
                             </DataTemplate>
                         </MenuItem.ItemTemplate>
                     </MenuItem>
-                    <MenuItem Header="_Save" InputGestureText="Ctrl+S" Command="{Binding FileSubViewModel.SaveDocumentCommand}" />
-                    <MenuItem Header="_Save As..." InputGestureText="Ctrl+Shift+S"
-                              Command="{Binding FileSubViewModel.SaveDocumentCommand}" CommandParameter="AsNew" />
+                    <usercontrols:CMDMenuItem Command="PixiEditor.File.SaveDocument"/>
+                    <MenuItem Header="_Save" InputGestureText="{cmds:ShortcutBinding PixiEditor.File.SaveDocument}" Command="{cmds:CommandBinding PixiEditor.File.SaveDocument}" />
+                    <MenuItem Header="_Save As..." InputGestureText="{cmds:ShortcutBinding PixiEditor.File.SaveDocumentAsNew}" Command="{cmds:CommandBinding PixiEditor.File.SaveDocumentAsNew}"/>
                     <MenuItem Header="_Export" InputGestureText="Ctrl+Shift+Alt+S" Command="{Binding FileSubViewModel.ExportFileCommand}" />
                     <Separator />
                     <MenuItem Header="_Exit" Command="{x:Static SystemCommands.CloseWindowCommand}" />
@@ -131,10 +132,10 @@
                     <MenuItem Header="_Deselect" Command="{Binding SelectionSubViewModel.DeselectCommand}" InputGestureText="Ctrl+D" />
                 </MenuItem>
                 <MenuItem Header="_Image">
-                    <MenuItem Header="Resize _Image..." Command="{Binding DocumentSubViewModel.OpenResizePopupCommand}"
-                              InputGestureText="Ctrl+Shift+I" />
-                    <MenuItem Header="_Resize Canvas..." Command="{Binding DocumentSubViewModel.OpenResizePopupCommand}"
-                              CommandParameter="canvas" InputGestureText="Ctrl+Shift+C" />
+                    <MenuItem Header="Resize _Image..." Command="{cmds:CommandBinding PixiEditor.Document.OpenResizeDocumentPopup}"
+                              InputGestureText="{cmds:ShortcutBinding PixiEditor.Document.OpenResizeDocumentPopup}" />
+                    <MenuItem Header="_Resize Canvas..." Command="{cmds:CommandBinding PixiEditor.Document.OpenResizeCanvasPopup}"
+                              CommandParameter="canvas" InputGestureText="{cmds:ShortcutBinding PixiEditor.Document.OpenResizeCanvasPopup}" />
                     <MenuItem Header="_Clip Canvas" Command="{Binding DocumentSubViewModel.ClipCanvasCommand}" />
                     <Separator/>
                     <MenuItem Header="_Center Content" Command="{Binding DocumentSubViewModel.CenterContentCommand}" />

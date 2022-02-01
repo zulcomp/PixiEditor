@@ -126,7 +126,7 @@ namespace PixiEditor.Models.Controllers.Commands
                             debugAttr.Name,
                             debugAttr.Display,
                             debugAttr.Parameter,
-                            () => (ICommand)property.GetValue(_services.GetService(type)),
+                            (ICommand)property.GetValue(_services.GetService(type)),
                             shortcut),
                         ref command);
                 }
@@ -136,7 +136,7 @@ namespace PixiEditor.Models.Controllers.Commands
                             attribute.Name,
                             attribute.Display,
                             attribute.Parameter,
-                            () => (ICommand)property.GetValue(_services.GetService(type)),
+                            (ICommand)property.GetValue(_services.GetService(type)),
                             shortcut);
                 }
 
@@ -167,7 +167,7 @@ namespace PixiEditor.Models.Controllers.Commands
                     attribute.Name,
                     attribute.Display,
                     factory,
-                    () => (ICommand)property.GetValue(_services.GetService(type)),
+                    (ICommand)property.GetValue(_services.GetService(type)),
                     shortcut);
             }
         }
@@ -198,7 +198,7 @@ namespace PixiEditor.Models.Controllers.Commands
                 name,
                 displayName,
                 type,
-                () => _services.GetRequiredService<ToolsViewModel>().SelectToolCommand,
+                _services.GetRequiredService<ToolsViewModel>().SelectToolCommand,
                 shortcut);
         }
 

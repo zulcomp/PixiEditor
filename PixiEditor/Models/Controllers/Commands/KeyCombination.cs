@@ -17,7 +17,6 @@ namespace PixiEditor.Models.Controllers.Commands
 
         public string ToString(CultureInfo culture)
         {
-
             StringBuilder builder = new();
 
             foreach (ModifierKeys modifier in Modifiers.GetFlags())
@@ -31,7 +30,7 @@ namespace PixiEditor.Models.Controllers.Commands
                 };
 
                 builder.Append(key);
-                builder.Append(" + ");
+                builder.Append("+");
             }
 
             if (Key != Key.None)

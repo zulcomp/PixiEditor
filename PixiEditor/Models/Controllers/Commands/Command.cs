@@ -47,25 +47,19 @@ namespace PixiEditor.Models.Controllers.Commands
 
         public event CommandShortcutChanged ShortcutChanged;
 
-        public Func<ICommand> GetCommand { get; init; }
+        public ICommand ICommand { get; init; }
 
-        protected Command(string name, string display, KeyCombination shortcut, Func<ICommand> getCommand)
+        protected Command(string name, string display, KeyCombination shortcut, ICommand command)
         {
             Name = name;
             Display = display;
             Shortcut = shortcut;
-            GetCommand = getCommand;
+            ICommand = command;
         }
 
-        public virtual void Execute()
-        {
-            OnExecute(GetCommand());
-        }
+        public abstract void Execute();
 
-        protected virtual void OnExecute(ICommand command)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract bool CanExecute();
 
         public override string ToString() => Display;
     }
@@ -83,44 +77,48 @@ namespace PixiEditor.Models.Controllers.Commands
     {
         public object Parameter { get; init; }
 
-        public BasicCommand(string name, string display, object parameter, Func<ICommand> getCommand, KeyCombination shortcut = default)
-            : base(name, display, shortcut, getCommand)
+        public BasicCommand(string name, string display, object parameter, ICommand command, KeyCombination shortcut = default)
+            : base(name, display, shortcut, command)
         {
             Parameter = parameter;
         }
 
-        protected override void OnExecute(ICommand command)
+        public override void Execute()
         {
-            if (command.CanExecute(Parameter))
+            if (CanExecute())
             {
-                command.Execute(Parameter);
+                ICommand.Execute(Parameter);
             }
         }
+
+        public override bool CanExecute() => ICommand.CanExecute(Parameter);
     }
 
     public class FactoryCommand : Command
     {
         public Func<Command, object> ParameterFactory { get; init; }
 
-        public FactoryCommand(string name, string display, Func<Command, object> parameterFactory, Func<ICommand> getCommand, KeyCombination shortcut = default)
-            : base(name, display, shortcut, getCommand)
+        public FactoryCommand(string name, string display, Func<Command, object> parameterFactory, ICommand command, KeyCombination shortcut = default)
+            : base(name, display, shortcut, command)
         {
             ParameterFactory = parameterFactory;
         }
 
-        public FactoryCommand(string name, string display, Func<object> parameterFactory, Func<ICommand> getCommand, KeyCombination shortcut = default)
-            : this(name, display, _ => parameterFactory(), getCommand, shortcut)
+        public FactoryCommand(string name, string display, Func<object> parameterFactory, ICommand command, KeyCombination shortcut = default)
+            : this(name, display, _ => parameterFactory(), command, shortcut)
         {
         }
 
-        protected override void OnExecute(ICommand command)
+        public override void Execute()
         {
             object parameter = ParameterFactory(this);
 
-            if (command.CanExecute(parameter))
+            if (ICommand.CanExecute(parameter))
             {
-                command.Execute(parameter);
+                ICommand.Execute(parameter);
             }
         }
+
+        public override bool CanExecute() => ICommand.CanExecute(ParameterFactory(this));
     }
 }
