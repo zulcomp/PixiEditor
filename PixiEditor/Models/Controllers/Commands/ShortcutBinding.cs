@@ -25,5 +25,13 @@ namespace PixiEditor.Models.Controllers.Commands
                 StringFormat = ""
             }.ProvideValue(serviceProvider);
         }
+
+        public static Binding GetBinding(Command command) => new Binding
+        {
+            Source = command,
+            Path = new("Shortcut"),
+            Mode = BindingMode.OneWay,
+            StringFormat = ""
+        };
     }
 }

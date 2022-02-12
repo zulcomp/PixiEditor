@@ -14,7 +14,7 @@
         xmlns:cmds="clr-namespace:PixiEditor.Models.Controllers.Commands"
         xmlns:avalondock="https://github.com/Dirkster99/AvalonDock"
         xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker" 
-        xmlns:usercontrols="clr-namespace:PixiEditor.Views.UserControls" 
+        xmlns:uc="clr-namespace:PixiEditor.Views.UserControls" 
         xmlns:behaviours="clr-namespace:PixiEditor.Helpers.Behaviours" 
         xmlns:avalonDockTheme="clr-namespace:PixiEditor.Styles.AvalonDock" 
         xmlns:layerUserControls="clr-namespace:PixiEditor.Views.UserControls.Layers" 
@@ -85,7 +85,7 @@
         <DockPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="{StaticResource MainColor}">
             <Image DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Top"
                    Source="/Images/PixiEditorLogo.png" Width="20" Height="20" Margin="5,5,0,0" />
-            <Menu WindowChrome.IsHitTestVisibleInChrome="True" Margin="10, 4, 0, 0" DockPanel.Dock="Left"
+            <uc:Menu WindowChrome.IsHitTestVisibleInChrome="True" Margin="10, 4, 0, 0" DockPanel.Dock="Left"
                   HorizontalAlignment="Left" VerticalAlignment="Top" Background="Transparent" IsMainMenu="True">
                 <Menu.Resources>
                     <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource menuItemStyle}" />
@@ -106,8 +106,8 @@
                             </DataTemplate>
                         </MenuItem.ItemTemplate>
                     </MenuItem>
-                    <usercontrols:CMDMenuItem Command="PixiEditor.File.SaveDocument"/>
-                    <MenuItem Header="_Save" InputGestureText="{cmds:ShortcutBinding PixiEditor.File.SaveDocument}" Command="{cmds:CommandBinding PixiEditor.File.SaveDocument}" />
+                    <uc:CMDMenuItem Command="PixiEditor.File.SaveDocument"/>
+                    <MenuItem Header="_Save" uc:Menu.CommandName="PixiEditor.File.SaveDocument" />
                     <MenuItem Header="_Save As..." InputGestureText="{cmds:ShortcutBinding PixiEditor.File.SaveDocumentAsNew}" Command="{cmds:CommandBinding PixiEditor.File.SaveDocumentAsNew}"/>
                     <MenuItem Header="_Export" InputGestureText="Ctrl+Shift+Alt+S" Command="{Binding FileSubViewModel.ExportFileCommand}" />
                     <Separator />
@@ -194,7 +194,7 @@
                                       CommandParameter="%AppData%/PixiEditor/user_preferences.json"/>
                     </MenuItem>
                 </MenuItem>
-            </Menu>
+            </uc:Menu>
             <StackPanel DockPanel.Dock="Right" VerticalAlignment="Top" Orientation="Horizontal" Margin="0,-5,-5,0"
                         HorizontalAlignment="Right" WindowChrome.IsHitTestVisibleInChrome="True">
                 <Button Style="{StaticResource MinimizeButtonStyle}" WindowChrome.IsHitTestVisibleInChrome="True"
@@ -293,7 +293,7 @@
                         <ui:DocumentsTemplateSelector>
                             <ui:DocumentsTemplateSelector.DocumentsViewTemplate>
                                 <DataTemplate DataType="{x:Type dataHolders:Document}">
-                                    <usercontrols:DrawingViewPort
+                                    <uc:DrawingViewPort
                                         CenterViewportTrigger="{Binding CenterViewportTrigger}"
                                         ZoomViewportTrigger="{Binding ZoomViewportTrigger}"
                                         GridLinesVisible="{Binding XamlAccesibleViewModel.ViewportSubViewModel.GridLinesEnabled}"
@@ -317,7 +317,7 @@
                                                 <i:InvokeCommandAction Command="{Binding SetAsActiveOnClickCommand}"/>
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
-                                        <usercontrols:DrawingViewPort.ContextMenu>
+                                        <uc:DrawingViewPort.ContextMenu>
                                             <ContextMenu>
                                                 <MenuItem Header="_Select All" Command="{Binding XamlAccesibleViewModel.SelectionSubViewModel.SelectAllCommand}" InputGestureText="Ctrl+A" />
                                                 <MenuItem Header="_Deselect" Command="{Binding XamlAccesibleViewModel.SelectionSubViewModel.DeselectCommand}" InputGestureText="Ctrl+D" />
@@ -326,8 +326,8 @@
                                                 <MenuItem Header="_Copy" Command="{Binding XamlAccesibleViewModel.ClipboardSubViewModel.CopyCommand}" InputGestureText="Ctrl+C" />
                                                 <MenuItem Header="_Paste" Command="{Binding XamlAccesibleViewModel.ClipboardSubViewModel.PasteCommand}" InputGestureText="Ctrl+V" />
                                             </ContextMenu>
-                                        </usercontrols:DrawingViewPort.ContextMenu>
-                                    </usercontrols:DrawingViewPort>
+                                        </uc:DrawingViewPort.ContextMenu>
+                                    </uc:DrawingViewPort>
                                 </DataTemplate>
                             </ui:DocumentsTemplateSelector.DocumentsViewTemplate>
                         </ui:DocumentsTemplateSelector>
@@ -341,13 +341,13 @@
                                     <LayoutAnchorable ContentId="colorPicker" Title="Color Picker" CanHide="False"
                                                              CanClose="False" CanAutoHide="False" x:Name="colorPickerPanel"
                                                              CanDockAsTabbedDocument="False" CanFloat="True">
-                                        <usercontrols:SmallColorPicker SelectedColor="{Binding ColorsSubViewModel.PrimaryColor, Mode=TwoWay, Converter={StaticResource SKColorToMediaColorConverter}}"
+                                        <uc:SmallColorPicker SelectedColor="{Binding ColorsSubViewModel.PrimaryColor, Mode=TwoWay, Converter={StaticResource SKColorToMediaColorConverter}}"
                                                                          SecondaryColor="{Binding ColorsSubViewModel.SecondaryColor, Mode=TwoWay, Converter={StaticResource SKColorToMediaColorConverter}}" 
                                                                          Style="{StaticResource DefaultColorPickerStyle}" x:Name="mainColorPicker">
                                             <i:Interaction.Behaviors>
                                                 <behaviours:GlobalShortcutFocusBehavior/>
                                             </i:Interaction.Behaviors>
-                                        </usercontrols:SmallColorPicker>
+                                        </uc:SmallColorPicker>
                                     </LayoutAnchorable>
                                     <LayoutAnchorable ContentId="colorSliders" Title="Color Sliders" CanHide="False"
                                                       CanClose="False" CanAutoHide="False" x:Name="colorSlidersPanel"
@@ -362,7 +362,7 @@
                                     <avalondock:LayoutAnchorable ContentId="swatches" Title="Swatches" CanHide="False"
                                                                  CanClose="False" CanAutoHide="False"
                                                                  CanDockAsTabbedDocument="False" CanFloat="True">
-                                        <usercontrols:SwatchesView
+                                        <uc:SwatchesView
                                             SelectSwatchCommand="{Binding ColorsSubViewModel.SelectColorCommand}" RemoveSwatchCommand="{Binding ColorsSubViewModel.RemoveSwatchCommand}"
                                             Swatches="{Binding BitmapManager.ActiveDocument.Swatches}"/>
                                     </avalondock:LayoutAnchorable>
@@ -392,7 +392,7 @@
                                     <LayoutAnchorable ContentId="navigation" Title="Navigation" 
                                                       CanHide="True" CanAutoHide="False"
                                                       CanDockAsTabbedDocument="False" CanFloat="True">
-                                        <usercontrols:PreviewWindow 
+                                        <uc:PreviewWindow 
                                             Document="{Binding BitmapManager.ActiveDocument}"
                                             PrimaryColor="{Binding ColorsSubViewModel.PrimaryColor, Mode=TwoWay, Converter={StaticResource SKColorToMediaColorConverter}}"/>
                                     </LayoutAnchorable>
@@ -455,7 +455,7 @@
                        Foreground="White" FontSize="14"  Text="{Binding UpdateSubViewModel.VersionText}" />
             </StackPanel>
         </Grid>
-        <usercontrols:CommandControl Grid.ColumnSpan="999" Grid.RowSpan="999" 
+        <uc:CommandControl Grid.ColumnSpan="999" Grid.RowSpan="999" 
                                      HorizontalAlignment="Center" VerticalAlignment="Top"
                                      Margin="0,50,0,0"
                                      MinWidth="450" FontSize="18"
