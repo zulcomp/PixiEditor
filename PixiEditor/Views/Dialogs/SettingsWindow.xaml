@@ -155,31 +155,33 @@
                     Detail="{Binding SettingsSubViewModel.Discord.DetailPreview}" 
                     IsPlaying="{Binding SettingsSubViewModel.Discord.EnableRichPresence}"/>
             </StackPanel>
-            <StackPanel Visibility="{Binding SelectedItem, ElementName=pages, Converter={converters:EqualityBoolToVisibilityConverter},
+            <Grid Visibility="{Binding SelectedItem, ElementName=pages, Converter={converters:EqualityBoolToVisibilityConverter},
             ConverterParameter='Keybinds'}" Margin="15,10">
-            <Label Style="{StaticResource Header1}" Content="Keybindings"/>
-                        <StackPanel Orientation="Vertical" Margin="50 0 50 0">
-                            <TextBox Text="{Binding SettingsSubViewModel.Keybinds.SearchTerm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     Style="{StaticResource DarkTextBoxStyle}" Height="30" FontSize="16"
+                <ScrollViewer>
+                    <StackPanel Orientation="Vertical">
+                        <Label Margin="0 3" Style="{StaticResource SettingsHeader}">Keybinds</Label>
+                        <TextBox Text="{Binding SettingsSubViewModel.Keybinds.SearchTerm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     Style="{StaticResource DarkTextBoxStyle}"
                                      VerticalContentAlignment="Center">
-                                <i:Interaction.Behaviors>
-                                    <behaviours:GlobalShortcutFocusBehavior/>
-                                    <behaviours:TextBoxFocusBehavior/>
-                                </i:Interaction.Behaviors>
-                            </TextBox>
-                            <ItemsControl ItemsSource="{Binding SettingsSubViewModel.Keybinds.Commands}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate DataType="cmds:Command">
-                                        <Grid Margin="0 3">
-                                            <TextBlock Foreground="White" Text="{Binding Display}" FontSize="16"/>
-                                            <usercontrols:ShortcutBox HorizontalAlignment="Right" Shortcut="{Binding Shortcut}"
-                                                                  Width="100" Height="25" FontSize="16"/>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
-            </StackPanel>
+                            <i:Interaction.Behaviors>
+                                <behaviours:GlobalShortcutFocusBehavior/>
+                                <behaviours:TextBoxFocusBehavior/>
+                            </i:Interaction.Behaviors>
+                        </TextBox>
+                        <ItemsControl ItemsSource="{Binding SettingsSubViewModel.Keybinds.Commands}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="cmds:Command">
+                                    <Grid Margin="0 3">
+                                        <TextBlock Foreground="White" Text="{Binding Display}"/>
+                                        <usercontrols:ShortcutBox HorizontalAlignment="Right" Shortcut="{Binding Shortcut}"
+                                                                  Width="100"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
         </Grid>
     </DockPanel>
 </Window>
