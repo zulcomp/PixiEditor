@@ -21,7 +21,11 @@ namespace PixiEditor.Models.Controllers.Commands
 
         private class ProvidedICommand : ICommand
         {
-            public event EventHandler CanExecuteChanged;
+            public event EventHandler CanExecuteChanged
+            {
+                add => CommandManager.RequerySuggested += value;
+                remove => CommandManager.RequerySuggested -= value;
+            }
 
             private readonly Command _command;
 

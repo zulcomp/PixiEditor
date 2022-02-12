@@ -27,7 +27,7 @@ namespace PixiEditor.Views.UserControls
 
             var command = CommandController.Current.Commands[value];
 
-            item.Command = command.ICommand;
+            item.Command = CommandBinding.GenerateICommand(command);
             item.SetBinding(MenuItem.InputGestureTextProperty, ShortcutBinding.GetBinding(command));
         }
     }
