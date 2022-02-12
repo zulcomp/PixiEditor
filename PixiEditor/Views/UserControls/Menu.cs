@@ -1,27 +1,36 @@
-﻿using PixiEditor.Models.Controllers.Commands;
+﻿using PixiEditor.Helpers;
+using PixiEditor.Models.Controllers.Commands;
+using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace PixiEditor.Views.UserControls
 {
-    internal class Menu : System.Windows.Controls.Menu
+    public class Menu : System.Windows.Controls.Menu
     {
         public static readonly DependencyProperty CommandNameProperty =
             DependencyProperty.RegisterAttached(
-                "CommandName",
+                "Command",
                 typeof(string),
                 typeof(Menu),
                 new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, CommandChanged)
             );
 
-        public static string GetCommandName(UIElement target) => (string)target.GetValue(CommandNameProperty);
+        public static string GetCommand(UIElement target) => (string)target.GetValue(CommandNameProperty);
 
-        public static void SetCommandName(UIElement target, string value) => target.SetValue(CommandNameProperty, value);
+        public static void SetCommand(UIElement target, string value) => target.SetValue(CommandNameProperty, value);
 
         public static void CommandChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue is not string value || sender is not MenuItem item)
             {
+                throw new InvalidOperationException("Menu.Command only works for MenuItem's");
+            }
+
+            if (DesignerProperties.GetIsInDesignMode(sender as DependencyObject))
+            {
+                HandleDesignMode(item, value);
                 return;
             }
 
@@ -29,6 +38,12 @@ namespace PixiEditor.Views.UserControls
 
             item.Command = CommandBinding.GenerateICommand(command);
             item.SetBinding(MenuItem.InputGestureTextProperty, ShortcutBinding.GetBinding(command));
+        }
+
+        private static void HandleDesignMode(MenuItem item, string name)
+        {
+            var command = DesignCommandHelpers.GetCommandAttribute(name);
+            item.InputGestureText = new KeyCombination(command.Key, command.Modifiers).ToString();
         }
     }
 }

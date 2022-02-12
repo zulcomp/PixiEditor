@@ -106,21 +106,20 @@
                             </DataTemplate>
                         </MenuItem.ItemTemplate>
                     </MenuItem>
-                    <uc:CMDMenuItem Command="PixiEditor.File.SaveDocument"/>
-                    <MenuItem Header="_Save" uc:Menu.CommandName="PixiEditor.File.SaveDocument" />
-                    <MenuItem Header="_Save As..." InputGestureText="{cmds:ShortcutBinding PixiEditor.File.SaveDocumentAsNew}" Command="{cmds:CommandBinding PixiEditor.File.SaveDocumentAsNew}"/>
-                    <MenuItem Header="_Export" InputGestureText="Ctrl+Shift+Alt+S" Command="{Binding FileSubViewModel.ExportFileCommand}" />
+                    <MenuItem Header="_Save" uc:Menu.Command="PixiEditor.File.SaveDocument" />
+                    <MenuItem Header="_Save As..." uc:Menu.Command="PixiEditor.File.SaveDocumentAsNew"/>
+                    <MenuItem Header="_Export" uc:Menu.Command="PixiEditor.File.ExportFile"/>
                     <Separator />
                     <MenuItem Header="_Exit" Command="{x:Static SystemCommands.CloseWindowCommand}" />
                 </MenuItem>
                 <MenuItem Header="_Edit">
-                    <MenuItem Header="_Undo" InputGestureText="Ctrl+Z" Command="{Binding UndoSubViewModel.UndoCommand}" />
-                    <MenuItem Header="_Redo" InputGestureText="Ctrl+Y" Command="{Binding UndoSubViewModel.RedoCommand}" />
+                    <MenuItem Header="_Undo" uc:Menu.Command="PixiEditor.Undo.Undo"/>
+                    <MenuItem Header="_Redo" uc:Menu.Command="PixiEditor.Undo.Redo"/>
                     <Separator />
-                    <MenuItem Header="_Cut" Command="{Binding ClipboardSubViewModel.CutCommand}" InputGestureText="Ctrl+X" />
-                    <MenuItem Header="_Copy" Command="{Binding ClipboardSubViewModel.CopyCommand}" InputGestureText="Ctrl+C" />
-                    <MenuItem Header="_Paste" Command="{Binding ClipboardSubViewModel.PasteCommand}" InputGestureText="Ctrl+V" />
-                    <MenuItem Header="_Duplicate" Command="{Binding ClipboardSubViewModel.DuplicateCommand}" InputGestureText="Ctrl+J" />
+                    <MenuItem Header="_Copy" uc:Menu.Command="PixiEditor.Clipboard.Copy"/>
+                    <MenuItem Header="_Cut" uc:Menu.Command="PixiEditor.Clipboard.Cut"/>
+                    <MenuItem Header="_Paste" uc:Menu.Command="PixiEditor.Clipboard.Paste"/>
+                    <MenuItem Header="_Duplicate" uc:Menu.Command="PixiEditor.Clipboard.Duplicate"/>
                     <Separator />
                     <MenuItem Header="_Delete Selected" Command="{Binding DocumentSubViewModel.DeletePixelsCommand}"
                               InputGestureText="Delete" />
