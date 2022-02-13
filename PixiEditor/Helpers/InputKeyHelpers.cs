@@ -14,6 +14,16 @@ namespace PixiEditor.Helpers
 
         public static string GetKeyboardKey(Key key, CultureInfo culture) => key switch
         {
+            Key.NumPad0 => "Num0",
+            Key.NumPad1 => "Num1",
+            Key.NumPad2 => "Num2",
+            Key.NumPad3 => "Num3",
+            Key.NumPad4 => "Num4",
+            Key.NumPad5 => "Num5",
+            Key.NumPad6 => "Num6",
+            Key.NumPad7 => "Num7",
+            Key.NumPad8 => "Num8",
+            Key.NumPad9 => "Num9",
             Key.Space => nameof(Key.Space),
             Key.Tab => nameof(Key.Tab),
             Key.Back => nameof(Key.Back),

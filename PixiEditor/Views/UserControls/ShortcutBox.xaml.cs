@@ -10,17 +10,18 @@ namespace PixiEditor.Views.UserControls
     /// </summary>
     public partial class ShortcutBox : UserControl
     {
-        public static readonly DependencyProperty HotkeyProperty =
+        public static readonly DependencyProperty ShortcutProperty =
                 DependencyProperty.Register(nameof(Shortcut), typeof(KeyCombination),
                     typeof(ShortcutBox),
                     new FrameworkPropertyMetadata(
                         default(KeyCombination),
-                        FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+                        FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                        ShortcutChanged));
 
         public KeyCombination Shortcut
         {
-            get => (KeyCombination)GetValue(HotkeyProperty);
-            set => SetValue(HotkeyProperty, value);
+            get => (KeyCombination)GetValue(ShortcutProperty);
+            set => SetValue(ShortcutProperty, value);
         }
 
         public ShortcutBox()
@@ -28,7 +29,19 @@ namespace PixiEditor.Views.UserControls
             InitializeComponent();
         }
 
-        private void HotkeyTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        private static void ShortcutChanged(object sender, DependencyPropertyChangedEventArgs args)
+        {
+            (sender as ShortcutBox).textBox.Text = args.NewValue.ToString();
+        }
+
+        private void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = true;
+
+            textBox.Text = new KeyCombination(Key.None, Keyboard.Modifiers).ToString();
+        }
+
+        private void TextBox_PreviewKeyUp(object sender, KeyEventArgs e)
         {
             e.Handled = true;
 
@@ -53,11 +66,13 @@ namespace PixiEditor.Views.UserControls
                 case Key.Clear:
                 case Key.OemClear:
                 case Key.Apps:
+                    textBox.Text = new KeyCombination(Key.None, modifiers).ToString();
                     return;
             }
 
-            // Update the value
             Shortcut = new KeyCombination(key, modifiers);
+            FocusManager.SetFocusedElement(FocusManager.GetFocusScope(textBox), null);
+            Keyboard.ClearFocus();
         }
     }
 }

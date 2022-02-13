@@ -107,10 +107,10 @@
                         </MenuItem.ItemTemplate>
                     </MenuItem>
                     <MenuItem Header="_Save" uc:Menu.Command="PixiEditor.File.SaveDocument" />
-                    <MenuItem Header="_Save As..." uc:Menu.Command="PixiEditor.File.SaveDocumentAsNew"/>
-                    <MenuItem Header="_Export" uc:Menu.Command="PixiEditor.File.ExportFile"/>
+                    <MenuItem Header="Save _As..." uc:Menu.Command="PixiEditor.File.SaveDocumentAsNew"/>
+                    <MenuItem Header="Ex_port" uc:Menu.Command="PixiEditor.File.ExportFile"/>
                     <Separator />
-                    <MenuItem Header="_Exit" Command="{x:Static SystemCommands.CloseWindowCommand}" />
+                    <MenuItem Header="Ex_it" Command="{x:Static SystemCommands.CloseWindowCommand}" />
                 </MenuItem>
                 <MenuItem Header="_Edit">
                     <MenuItem Header="_Undo" uc:Menu.Command="PixiEditor.Undo.Undo"/>
@@ -121,23 +121,20 @@
                     <MenuItem Header="_Paste" uc:Menu.Command="PixiEditor.Clipboard.Paste"/>
                     <MenuItem Header="_Duplicate" uc:Menu.Command="PixiEditor.Clipboard.Duplicate"/>
                     <Separator />
-                    <MenuItem Header="_Delete Selected" Command="{Binding DocumentSubViewModel.DeletePixelsCommand}"
-                              InputGestureText="Delete" />
+                    <MenuItem Header="_Delete Selected" uc:Menu.Command="PixiEditor.Document.DeletePixels"/>
                     <Separator />
-                    <MenuItem Header="_Settings" Command="{Binding MiscSubViewModel.OpenSettingsWindowCommand}" />
+                    <MenuItem Header="_Settings" uc:Menu.Command="PixiEditor.Preferences.OpenSettingsWindow"/>
                 </MenuItem>
                 <MenuItem Header="_Select">
-                    <MenuItem Header="_Select All" Command="{Binding SelectionSubViewModel.SelectAllCommand}" InputGestureText="Ctrl+A" />
-                    <MenuItem Header="_Deselect" Command="{Binding SelectionSubViewModel.DeselectCommand}" InputGestureText="Ctrl+D" />
+                    <MenuItem Header="_Select All" uc:Menu.Command="PixiEditor.Selection.SelectAll"/>
+                    <MenuItem Header="_Deselect" uc:Menu.Command="PixiEditor.Selection.DeselectAll"/>
                 </MenuItem>
                 <MenuItem Header="_Image">
-                    <MenuItem Header="Resize _Image..." Command="{cmds:CommandBinding PixiEditor.Document.OpenResizeDocumentPopup}"
-                              InputGestureText="{cmds:ShortcutBinding PixiEditor.Document.OpenResizeDocumentPopup}" />
-                    <MenuItem Header="_Resize Canvas..." Command="{cmds:CommandBinding PixiEditor.Document.OpenResizeCanvasPopup}"
-                              CommandParameter="canvas" InputGestureText="{cmds:ShortcutBinding PixiEditor.Document.OpenResizeCanvasPopup}" />
-                    <MenuItem Header="_Clip Canvas" Command="{Binding DocumentSubViewModel.ClipCanvasCommand}" />
+                    <MenuItem Header="Resize _Image" uc:Menu.Command="PixiEditor.Document.OpenResizeDocumentPopup"/>
+                    <MenuItem Header="Resize _Canvas" uc:Menu.Command="PixiEditor.Document.OpenResizeCanvasPopup"/>
+                    <MenuItem Header="C_lip Canvas" uc:Menu.Command="PixiEditor.Document.ClipCanvas"/>
                     <Separator/>
-                    <MenuItem Header="_Center Content" Command="{Binding DocumentSubViewModel.CenterContentCommand}" />
+                    <MenuItem Header="C_enter Content" uc:Menu.Command="PixiEditor.Document.CenterContent"/>
                     <!--<Separator/>
                     <MenuItem Header="_Rotate to right 90&#186;" Command="{Binding DocumentSubViewModel.RotateToRightCommand}">
                         <MenuItem.CommandParameter>

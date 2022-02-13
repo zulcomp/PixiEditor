@@ -175,6 +175,9 @@
                 <Setter Property="Background" Value="{StaticResource AccentColor}"/>
                 <Setter Property="BorderBrush" Value="{StaticResource BrighterAccentColor}"/>
             </Trigger>
+            <Trigger Property="IsFocused" Value="True">
+                <Setter Property="Background" Value="{StaticResource DarkerAccentColor}"/>
+            </Trigger>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{StaticResource DarkerAccentColor}"/>
                 <Setter Property="BorderBrush" Value="{StaticResource AlmostLightModeAccentColor}"/>
